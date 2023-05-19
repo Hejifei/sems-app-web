@@ -1,0 +1,14 @@
+:root {
+  --light-color: #fff;
+  --dark-color: #000;
+  --light-button-color: red;
+
+}
+
+body {
+  &.light {
+    --default-bg: var(--light-color);
+    --default-text-color: var(--dark-color);
+    --custom-light-primary-color: var(--light-button-color);
+  }
+}

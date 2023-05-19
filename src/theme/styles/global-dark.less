@@ -1,0 +1,14 @@
+:root {
+  --light-color: #fff;
+  --dark-color: #000;
+  --dark-button-color: green;
+
+}
+
+body {
+  &.dark {
+    --default-bg: var(--dark-color);
+    --default-text-color: var(--light-color);
+    --custom-dark-primary-color: var(--dark-button-color);
+  }
+}

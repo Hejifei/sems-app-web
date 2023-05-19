@@ -1,0 +1,25 @@
+- yarn dev --mode development
+
+
+- 环境变量
+  - set .env文件
+  - get  import.meta.env
+
+- redux触发
+  - 方法1:
+    ```
+      import {useAppDispatch} from '@/hooks/redux_hook'
+      import {increment} from '@/models/baseSlice'
+
+      const dispatch = useAppDispatch()
+      dispatch(increment())
+    ```
+  - 方法2:
+    ```
+      import {dispatchAction} from '@/util'
+
+      dispatch({
+        type: 'base/increment',
+        payload: '',
+      })
+    ```
