@@ -9,6 +9,7 @@ import 'antd/dist/antd.css'
 //  修复datapicker中文翻译异常
 import 'moment/dist/locale/zh-cn'
 import '@/theme/styles/global.less'
+import 'promise-polyfill/src/polyfill'
 
 // import {StrictMode} from 'react'
 import {createRoot} from 'react-dom/client'

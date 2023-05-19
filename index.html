@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + React + TS</title>
     <script>
-      fetch('./config.json').then(res => res.json()).then(data => {
+      fetch('config.json').then(res => res.json()).then(data => {
         window.globalConfig = data;
         console.log(window.globalConfig);
       }).catch(err => {

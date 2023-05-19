@@ -1,8 +1,10 @@
-import {defineConfig} from 'vite'
 import react from '@vitejs/plugin-react'
-import eslintPlugin from 'vite-plugin-eslint'
 import path from 'path'
-// const postcssPresetEnv = require('postcss-preset-env')
+import {defineConfig} from 'vite'
+import eslintPlugin from 'vite-plugin-eslint'
+// import {injectHtml} from 'vite-plugin-html'
+import autoprefixer from 'autoprefixer'
+const postcssPresetEnv = require('postcss-preset-env')
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,6 +16,14 @@ export default defineConfig({
     eslintPlugin({
       include: ['src/**/*.ts', 'src/**/*.tsx', 'src/*.ts', 'src/*.tsx', '*.ts'],
     }),
+    // 其他插件...
+    // injectHtml({
+    //   injectData: {
+    //     polyfills: `
+    //       <script src="/node_modules/promise-polyfill/dist/polyfill.js"></script>
+    //     `,
+    //   },
+    // }),
   ],
   resolve: {
     alias: {
@@ -57,6 +67,24 @@ export default defineConfig({
     },
     // 开启css文件索引
     devSourcemap: true,
+    postcss: {
+      plugins: [
+        autoprefixer({
+          overrideBrowserslist: [
+            'Chrome > 31',
+            'ff > 31',
+            'ie 11',
+            '> 1%',
+          ],
+        }),
+        // require('postcss-flexbugs-fixes'),
+        // postcssPresetEnv(),
+        require('postcss-preset-env'),
+      ],
+    },
+    // postcss: {
+    //   plugins: [require('autoprefixer')],
+    // }
     // postcss: {
     //   plugins: [
     //     postcssPresetEnv(),
@@ -71,5 +99,8 @@ export default defineConfig({
     // },
     outDir: 'dist', //指定输出路径
     assetsDir: 'assets', //指定生成静态资源的存放路径
+    // babel: {
+    //   injectPolyfill: true,
+    // },
   },
 })
