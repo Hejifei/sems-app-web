@@ -6,7 +6,7 @@ import React, {useCallback, useState} from 'react'
 import {useTranslation} from 'react-i18next'
 import {useNavigate} from 'react-router-dom'
 
-import {fetchLogin} from '@/apis/account'
+import {fetchLogin} from '@/api/account'
 import lang from '@/assets/imgs/lang.png'
 //导入图片
 import logo from '@/assets/imgs/logo.png'

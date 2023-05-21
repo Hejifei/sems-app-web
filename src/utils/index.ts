@@ -1,6 +1,6 @@
 /* eslint-disable object-curly-spacing */
 import {PayloadAction} from '@reduxjs/toolkit'
-import {isPlainObject} from 'lodash'
+import {isNull, isPlainObject, isUndefined} from 'lodash'
 
 import {
   LOCALSTORAGE_THEME_DARK_VALUE,
@@ -148,4 +148,33 @@ export function getEmptyBlockHeight(
     height: item_top_box_height,
     page: page_index,
   }
+}
+
+export const getUrlParams = () => {
+  var url = window.location.href
+
+  // Extract the query string from the URL
+  var queryString = url.split('?')[1]
+
+  // Split the query string into individual parameters
+  var paramsArray = queryString.split('&')
+
+  // Create an object to store the parameter key-value pairs
+  var params: Record<string, string> = {}
+
+  // Loop through the parameters and populate the object
+  paramsArray.forEach(function (param) {
+    var keyValue = param.split('=')
+    var key = decodeURIComponent(keyValue[0])
+    var value = decodeURIComponent(keyValue[1])
+    params[key] = value
+  })
+  console.log({
+    params,
+  })
+  return params
+}
+
+export const isEmpty = (value: any) => {
+  return isNull(value) || isUndefined(value)
 }

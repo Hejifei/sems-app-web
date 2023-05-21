@@ -1,10 +1,11 @@
 import {message} from 'antd'
 import axios, {AxiosRequestConfig} from 'axios'
-import {set} from 'lodash'
 
+// import {set} from 'lodash'
 import {ACCESS_CONTROL_ALLOW_ORIGIN, X_AUTH_TOKEN} from '@/common/http'
-import {LOCALSTORAGE_LANGUAGE_MAP} from '@/common/language'
-import {getHeaderAuthToken, getLanguage, logout} from '@/utils'
+// import {LOCALSTORAGE_LANGUAGE_MAP} from '@/common/language'
+import {getHeaderAuthToken, logout} from '@/utils'
+import getDeviceInfo from '@/utils/device-info'
 
 const cancelToken = axios.CancelToken
 let source = cancelToken.source()
@@ -21,13 +22,15 @@ const cancelRequestAndRecoverRequest = () => {
   }, 1000)
 }
 
+const deviceInfo = getDeviceInfo()
+
 //默认请求超时时间
 const timeout = 30000
 
 //创建axios实例
 const service = axios.create({
   timeout,
-  baseURL: window.globalConfig.api,
+  // baseURL: window.globalConfig.api,
   //如需要携带cookie 该值需设为true
   withCredentials: true,
 })
@@ -37,27 +40,29 @@ service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
     //配置自定义请求头
     let token = getHeaderAuthToken()
-    const tokenHeader: IDynamicMap = {}
-    const activeLanguage = getLanguage() || ''
-    const {key: activeLanguageKey} = LOCALSTORAGE_LANGUAGE_MAP[activeLanguage] || {}
+    const tokenHeader: IDynamicMap = {
+      ...deviceInfo,
+    }
+    // const activeLanguage = getLanguage() || ''
+    // const {key: activeLanguageKey} = LOCALSTORAGE_LANGUAGE_MAP[activeLanguage] || {}
 
     // 默认token
-    tokenHeader[X_AUTH_TOKEN] = JSON.stringify({
-      uid: '',
-      timestamp: 0,
-      token: '',
-      client: 'web',
-      version: '',
-      language: activeLanguageKey || 'zh',
-    })
+    // tokenHeader[X_AUTH_TOKEN] = JSON.stringify({
+    //   uid: '',
+    //   timestamp: 0,
+    //   token: '',
+    //   client: 'web',
+    //   version: '',
+    //   language: activeLanguageKey || 'zh',
+    // })
     if (token) {
-      if (activeLanguage) {
-        // 处理页面切换中英文
-        const newToken = JSON.parse(token)
+      // if (activeLanguage) {
+      //   // 处理页面切换中英文
+      //   const newToken = JSON.parse(token)
 
-        set(newToken, 'language', activeLanguageKey)
-        token = JSON.stringify(newToken)
-      }
+      //   set(newToken, 'language', activeLanguageKey)
+      //   // token = JSON.stringify(newToken)
+      // }
       tokenHeader[X_AUTH_TOKEN] = token
     }
 

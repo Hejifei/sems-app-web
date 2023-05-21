@@ -1,9 +1,9 @@
 import react from '@vitejs/plugin-react'
+// import {injectHtml} from 'vite-plugin-html'
+import autoprefixer from 'autoprefixer'
 import path from 'path'
 import {defineConfig} from 'vite'
 import eslintPlugin from 'vite-plugin-eslint'
-// import {injectHtml} from 'vite-plugin-html'
-import autoprefixer from 'autoprefixer'
 const postcssPresetEnv = require('postcss-preset-env')
 
 // https://vitejs.dev/config/
@@ -70,12 +70,7 @@ export default defineConfig({
     postcss: {
       plugins: [
         autoprefixer({
-          overrideBrowserslist: [
-            'Chrome > 31',
-            'ff > 31',
-            'ie 11',
-            '> 1%',
-          ],
+          overrideBrowserslist: ['Chrome > 31', 'ff > 31', 'ie 11', '> 1%'],
         }),
         // require('postcss-flexbugs-fixes'),
         // postcssPresetEnv(),
@@ -102,5 +97,14 @@ export default defineConfig({
     // babel: {
     //   injectPolyfill: true,
     // },
+  },
+  server: {
+    proxy: {
+      '^/api': {
+        target: 'http://test.sems.192.168.221.92.nip.io',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, '/api/'),
+      },
+    },
   },
 })

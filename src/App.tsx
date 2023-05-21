@@ -5,7 +5,7 @@ import type {FC} from 'react'
 import {useCallback, useEffect, useState} from 'react'
 import {connect} from 'react-redux'
 
-import {fetchLogin} from '@/apis/account'
+import {fetchLogin} from '@/api/account'
 import {useAppDispatch, useAppSelector} from '@/hooks/redux_hook'
 import {decrement, increment, incrementByAmount} from '@/models/baseSlice'
 import {getList} from '@/models/baseSlice'
@@ -96,7 +96,8 @@ const App: FC<IProps> = ({value}) => {
       </div>
       <h1>Vite + React xx</h1>
       <RangePicker />
-      <div className="card">cLI
+      <div className="card">
+        cLI
         <button onClick={() => setCount(val => val + 1)}>count is {count}</button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR

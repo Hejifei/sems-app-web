@@ -4,7 +4,7 @@ import {get} from 'lodash'
 import {useTranslation} from 'react-i18next'
 import {useNavigate} from 'react-router-dom'
 
-import {fetchChangePassword} from '@/apis/account'
+import {fetchChangePassword} from '@/api/account'
 import {PASSWORD_REG} from '@/common'
 import {getUserInfo} from '@/utils'
 
