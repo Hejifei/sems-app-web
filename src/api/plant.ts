@@ -1,4 +1,4 @@
-import {get, isPlainObject} from 'lodash'
+// import {get, isPlainObject} from 'lodash'
 
 import {request} from '@/utils/request'
 
@@ -182,32 +182,39 @@ const plant = {
 
 export async function getElcStatisticsRequest(params: any) {
   const res = await request.post(plant.prefix + plant.getElcStatistics.post, params)
-  let data = get(res, 'data')
+  // let data = get(res, 'data')
 
-  if (!isPlainObject(data)) {
-    data = {}
-  }
-  return data
+  // if (!isPlainObject(data)) {
+  //   data = {}
+  // }
+  return res
 }
 
 export async function fetchInverterList(params: any) {
-  const res = await request.get(plant.prefix + plant.deviceList.get, params)
-  let data = get(res, 'data')
+  let queryStr = '?'
+  Object.keys(params).forEach((key, index) => {
+    if (index !== 0) {
+      queryStr = queryStr + '&'
+    }
+    queryStr = queryStr + `${key}=${params[key]}`
+  })
+  const res = await request.get(plant.prefix + plant.deviceList.get + queryStr, params)
+  // let data = get(res, 'data')
 
-  if (!isPlainObject(data)) {
-    data = {}
-  }
-  return data
+  // if (!isPlainObject(data)) {
+  //   data = {}
+  // }
+  return res
 }
 
 export async function getPowerStatisticsRequest(params: any) {
   const res = await request.post(plant.prefix + plant.getPowerStatistics.post, params)
-  let data = get(res, 'data')
+  // let data = get(res, 'data')
 
-  if (!isPlainObject(data)) {
-    data = {}
-  }
-  return data
+  // if (!isPlainObject(data)) {
+  //   data = {}
+  // }
+  return res
 }
 
 export default plant

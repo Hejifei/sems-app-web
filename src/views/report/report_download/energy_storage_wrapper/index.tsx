@@ -11,6 +11,8 @@ import GenerationChart from '../components/generation_chart'
 import PieChart, {IProductionChartData} from '../components/pie_chart'
 import ProductionEarningLabel from '../components/production_earning_label'
 import PvChart from '../components/pv_chart'
+import ReportPage from '../components/report_page'
+import ReportTitle from '../components/report_title'
 import style from './index.module.less'
 
 interface IProps {
@@ -33,7 +35,7 @@ export const PlantlistContext = React.createContext<any>({})
 const EnergyStorageWrapper: FC<IProps> = ({
   id,
   // classification,
-  // title,
+  title,
   currency,
   // activeKeys,
   dateRange,
@@ -274,43 +276,48 @@ const EnergyStorageWrapper: FC<IProps> = ({
 
   return (
     <div className={style.container}>
-      <div className={style.head}>
-        <label>Power</label>
-      </div>
-      <PvChart pvChartData={pvChartData} />
+      <ReportPage title={title} pageSize={1}>
+        <ReportTitle>Power</ReportTitle>
+        <PvChart pvChartData={pvChartData} />
+      </ReportPage>
 
-      <div className={style.head}>
-        <label>Production & Earning</label>
-      </div>
-      <ProductionEarningLabel
-        productionValue={elcStatisticDataList?.generation}
-        earningValue={elcStatisticDataList?.income}
-        currency={currency}
-      />
-      <GenerationChart
-        isMultiDeviceQuery={true}
-        lineChartData={lineChartData}
-        pieChartData={pieChartData}
-        formatter={params => {
-          let str = ''
-          params.forEach((item: any, index: number) => {
-            const {seriesName, axisValueLabel, marker, value} = item
-            if (index === 0) {
-              str += `${axisValueLabel}<br/>`
-            }
-            str += '<div style="text-align:left">'
-            str += `<span style="display:inline-block;width:100px;">${marker}${seriesName}</span>`
-            str +=
-              '<span style="display:inline-block;text-align:right;width:80px;">' +
-              value.toFixed(2) +
-              '</span>'
-            str += '</div>'
-          })
-          return str
-        }}
-      />
-      <PieChart ProductionChartData={ProductionChartData} />
-      <PvChart pvChartData={socChartDataList} />
+      <ReportPage title={title} pageSize={2}>
+        <ReportTitle>Production & Earning</ReportTitle>
+        <ProductionEarningLabel
+          productionValue={elcStatisticDataList?.generation}
+          earningValue={elcStatisticDataList?.income}
+          currency={currency}
+        />
+        <GenerationChart
+          isMultiDeviceQuery={true}
+          lineChartData={lineChartData}
+          pieChartData={pieChartData}
+          formatter={params => {
+            let str = ''
+            params.forEach((item: any, index: number) => {
+              const {seriesName, axisValueLabel, marker, value} = item
+              if (index === 0) {
+                str += `${axisValueLabel}<br/>`
+              }
+              str += '<div style="text-align:left">'
+              str += `<span style="display:inline-block;width:100px;">${marker}${seriesName}</span>`
+              str +=
+                '<span style="display:inline-block;text-align:right;width:80px;">' +
+                value.toFixed(2) +
+                '</span>'
+              str += '</div>'
+            })
+            return str
+          }}
+        />
+      </ReportPage>
+
+      <ReportPage title={title} pageSize={3}>
+        <PieChart ProductionChartData={ProductionChartData} />
+        <PvChart pvChartData={socChartDataList} />
+      </ReportPage>
+
+      {/* <ReportPage title={title} pageSize={4}></ReportPage> */}
     </div>
   )
 }

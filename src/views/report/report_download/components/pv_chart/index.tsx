@@ -102,17 +102,17 @@ const PvChart: FC<Iprops> = props => {
           show: false,
         },
       },
-      dataZoom: [
-        {
-          type: 'inside',
-          start: 0,
-          end: 100,
-        },
-        // {
-        //   start: 0,
-        //   end: 10,
-        // },
-      ],
+      // dataZoom: [
+      //   {
+      //     type: 'inside',
+      //     start: 0,
+      //     end: 100,
+      //   },
+      //   // {
+      //   //   start: 0,
+      //   //   end: 10,
+      //   // },
+      // ],
       series: seriesDataList,
     }
     return parseChartoptionData(optionData)

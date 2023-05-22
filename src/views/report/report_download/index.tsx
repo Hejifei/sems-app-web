@@ -8,7 +8,7 @@ import EnergyStorageWrapper from './energy_storage_wrapper'
 import GridWrapper from './grid_wrapper'
 import HomePage from './home_page'
 import styles from './index.module.less'
-import PowerPage from './power_page'
+// import PowerPage from './power_page'
 interface IProps {}
 
 const ReportDownload: FC<IProps> = () => {
@@ -23,8 +23,14 @@ const ReportDownload: FC<IProps> = () => {
     timeRange: timeRangeStr,
     title,
   } = useMemo(() => getUrlParams(), [])
-  const timeRange = useMemo(() => {
+  const timeRange: [Moment, Moment] = useMemo(() => {
     const [timeSrartUnix, timeEndUnix] = JSON.parse(timeRangeStr)
+    console.log({
+      timeSrartUnix,
+      timeEndUnix,
+      start: moment(timeSrartUnix).valueOf(),
+      end: moment(timeEndUnix).valueOf(),
+    })
     return [moment(timeSrartUnix), moment(timeEndUnix)]
   }, [timeRangeStr])
   console.log({
@@ -45,32 +51,35 @@ const ReportDownload: FC<IProps> = () => {
 
   //  是否是并网
   const isGrid = useMemo(() => classification.startsWith('Grid'), [classification])
-  const dateRange: [Moment, Moment] = [moment(), moment()]
+  console.log({
+    isGrid,
+  })
 
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.pageCenter} ref={reportRef}>
-        <HomePage />
-        <PowerPage isGrid={isGrid} />
-        {isGrid ? (
-          <GridWrapper
-            id={id}
-            title={title}
-            currency={currency}
-            dateRange={dateRange}
-            classification={classification}
-            mode={mode}
-          />
-        ) : (
-          <EnergyStorageWrapper
-            id={id}
-            title={title}
-            currency={currency}
-            dateRange={dateRange}
-            classification={classification}
-            mode={mode}
-          />
-        )}
+        <HomePage title={title} timeRange={timeRange} mode={mode} />
+        <div className={styles.pageContainer}>
+          {isGrid ? (
+            <GridWrapper
+              id={id}
+              title={title}
+              currency={currency}
+              dateRange={timeRange}
+              classification={classification}
+              mode={mode}
+            />
+          ) : (
+            <EnergyStorageWrapper
+              id={id}
+              title={title}
+              currency={currency}
+              dateRange={timeRange}
+              classification={classification}
+              mode={mode}
+            />
+          )}
+        </div>
       </div>
     </div>
   )

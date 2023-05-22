@@ -1,4 +1,4 @@
-import {get, isPlainObject} from 'lodash'
+// import {get, isPlainObject} from 'lodash'
 
 import {request} from '@/utils/request'
 /**
@@ -50,22 +50,22 @@ export async function getReportStationBatchDevicePowerCurvesRequest(params: any)
     report.prefix + report.getReportStationBatchDevicePowerCurves.post,
     params
   )
-  let data = get(res, 'data')
+  // let data = get(res, 'data')
 
-  if (!isPlainObject(data)) {
-    data = {}
-  }
-  return data
+  // if (!isPlainObject(data)) {
+  //   data = {}
+  // }
+  return res
 }
 
 export async function getReportStationEStaticsRequest(params: any) {
   const res = await request.post(report.prefix + report.getReportStationEStatics.post, params)
-  let data = get(res, 'data')
+  // let data = get(res, 'data')
 
-  if (!isPlainObject(data)) {
-    data = {}
-  }
-  return data
+  // if (!isPlainObject(data)) {
+  //   data = {}
+  // }
+  return res
 }
 
 export async function getReportStationBatchDeviceECurvesRequest(params: any) {
@@ -73,12 +73,12 @@ export async function getReportStationBatchDeviceECurvesRequest(params: any) {
     report.prefix + report.getReportStationBatchDeviceECurves.post,
     params
   )
-  let data = get(res, 'data')
+  // let data = get(res, 'data')
 
-  if (!isPlainObject(data)) {
-    data = {}
-  }
-  return data
+  // if (!isPlainObject(data)) {
+  //   data = {}
+  // }
+  return res
 }
 
 export default report

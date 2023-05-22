@@ -148,8 +148,8 @@ const requestHandler = <T>(
         } else if (status === 200) {
           const {code, msg} = resData
 
-          if (code === 0) {
-            console.log('before resolve')
+          if (code === '00000') {
+            // console.log('before resolve')
             resolve(resData as T | PromiseLike<T>)
             return
           }

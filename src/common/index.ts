@@ -28,3 +28,20 @@ export const DATE_PICKER_TYPE_MAP = {
     type: 'years',
   },
 }
+
+/**
+ * moment date formate
+ */
+export const MOMENT_DATE_FORMATE = 'YYYY-MM-DD HH:mm:ss'
+export const MOMENT_DATETIME_FORMATE = 'YYYY-MM-DD HH:mm'
+export const MOMENT_FORMATE = 'YYYY-MM'
+export const MOMENT_DAY_FORMATE = 'YYYY-MM-DD'
+export const MOMENT_DAY_NORMAL_FORMATE = 'YYYYMMDD'
+export const MOMENT_MONTH_NORMAL_FORMATE = 'YYYYMM'
+export const MOMENT_TUM_JSON_VERSION_FORMAT = 'YYYY.MM.DD.HHmmss'
+export const MOMENT_TIME_FORMATE = 'HH:mm'
+export const MOMENT_TIME_FORMATE_NO_FORMAT = 'HHmm'
+export const MOMENT_TIME_HMS_FORMATE = 'HH:mm:ss'
+export const MOMENT_RFC3339_FROMATE = 'YYYY-MM-DDTHH:mm:ssZ'
+export const MOMENT_MONTH_DAY_FORMATE = 'MM/DD'
+export const MOMENT_YEAR_MONTH_FORMATE = 'YYYY/MM'

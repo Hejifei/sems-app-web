@@ -1,6 +1,7 @@
+import {ColumnsType} from 'antd/lib/table'
 import {t} from 'i18next'
 import {get} from 'lodash'
-import {Moment} from 'moment'
+import moment, {Moment} from 'moment'
 import {FC, useCallback, useEffect, useMemo, useState} from 'react'
 
 import {fetchInverterList, getElcStatisticsRequest, getPowerStatisticsRequest} from '@/api/plant'
@@ -8,11 +9,15 @@ import {
   getReportStationBatchDeviceECurvesRequest,
   getReportStationEStaticsRequest,
 } from '@/api/report'
-import {DATE_PICKER_TYPE_YEAR} from '@/common'
+import {DATE_PICKER_TYPE_YEAR, MOMENT_DAY_FORMATE} from '@/common'
+import useNumberFormat from '@/hooks/useNumberFormat'
 
 import GenerationChart from '../components/generation_chart'
 import ProductionEarningLabel from '../components/production_earning_label'
 import PvChart from '../components/pv_chart'
+import ReportPage from '../components/report_page'
+import ReportTable from '../components/report_table'
+import ReportTitle from '../components/report_title'
 import style from './index.module.less'
 
 interface IProps {
@@ -24,7 +29,8 @@ interface IProps {
   mode: string
 }
 
-const GridWrapper: FC<IProps> = ({id, currency, dateRange, mode}) => {
+const GridWrapper: FC<IProps> = ({id, currency, dateRange, mode, title}) => {
+  const {getNumber} = useNumberFormat()
   const isMultiDeviceQuery = useMemo(() => false, [])
   //  设备选项列表
   // const [inverterList, setInverterList] = useState<IReport.IControlDevice[]>([])
@@ -238,29 +244,79 @@ const GridWrapper: FC<IProps> = ({id, currency, dateRange, mode}) => {
     return data || []
   }, [powerStaticsData])
 
+  const columns: ColumnsType<any> = useMemo(() => {
+    const columnList = [
+      {
+        title: 'Date',
+        dataIndex: 'date',
+        key: 'date',
+      },
+      {
+        title: 'Production',
+        dataIndex: 'e',
+        key: 'e',
+      },
+      {
+        title: 'Earning',
+        dataIndex: 'income',
+        key: 'income',
+      },
+    ]
+    return columnList
+  }, [lineChartData, pieChartData])
+
+  const tableData = useMemo(() => {
+    const DataList: Record<string, any>[] = []
+    if (isMultiDeviceQuery) {
+      // return batchDeviceECurvesData.map(({sn, curves}) => {
+      //   const dataList = get(
+      //     curves.filter(({item}) => item === 'income'),
+      //     [0, 'curveData']
+      //   )
+      //   return {
+      //     name: sn,
+      //     dataList: dataList.map(({date, val}) => ({
+      //       date,
+      //       value: val,
+      //     })),
+      //   }
+      // })
+      return []
+    }
+    const baseData = elcStatisticsData?.dataList || []
+    baseData[0]?.statisticsList.forEach(({date, val}, index) => {
+      const baseData1Val = baseData[1].statisticsList[index].val
+
+      DataList.push({
+        date: moment(date).format(MOMENT_DAY_FORMATE),
+        [baseData[0].item]: getNumber(Number(val), '').replace(/[a-z]/gi, ''),
+        [baseData[1].item]: getNumber(Number(baseData1Val), '').replace(/[a-z]/gi, ''),
+      })
+    })
+
+    return DataList
+  }, [elcStatisticsData])
+
   return (
     <div className={style.container}>
-      <div className={style.head}>
-        <label>Power</label>
-      </div>
-      <PvChart pvChartData={pvChartData} />
-      <label className={style.head}>
-        <label>Production & Earning</label>
-      </label>
-      <ProductionEarningLabel
-        productionValue={stationEStaticData?.totalYield}
-        earningValue={stationEStaticData?.totalRevenue}
-        currency={currency}
-      />
-      <div className={style.chartAndSelectWrapper}>
-        <div className={style.right}>
-          <GenerationChart
-            isMultiDeviceQuery={isMultiDeviceQuery}
-            lineChartData={lineChartData}
-            pieChartData={pieChartData}
-          />
-        </div>
-      </div>
+      <ReportPage title={title} pageSize={1}>
+        <ReportTitle>Power</ReportTitle>
+        <PvChart pvChartData={pvChartData} />
+      </ReportPage>
+      <ReportPage title={title} pageSize={2}>
+        <ReportTitle>Production & Earning</ReportTitle>
+        <ProductionEarningLabel
+          productionValue={stationEStaticData?.totalYield}
+          earningValue={stationEStaticData?.totalRevenue}
+          currency={currency}
+        />
+        <GenerationChart
+          isMultiDeviceQuery={isMultiDeviceQuery}
+          lineChartData={lineChartData}
+          pieChartData={pieChartData}
+        />
+        <ReportTable rowKey={'date'} columns={columns} data={tableData} />
+      </ReportPage>
     </div>
   )
 }
